@@ -58,3 +58,12 @@ class PostBlog(models.Model):
     
 
 
+class PostComment(models.Model):
+    comment = models.TextField(max_length=500)
+    comment_time = models.DateTimeField(auto_now_add=True)
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE)
+    post =  models.ForeignKey(PostBlog, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.commenter.username
+    

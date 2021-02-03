@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.http import request
 from django.db.models import fields
 
-from .models import PostBlog
+from .models import PostBlog,PostComment
 
 class PostListSerializer(serializers.ModelSerializer):
     blogger = serializers.SerializerMethodField() #blogger shows 1 (number). so added this code to see real username
@@ -33,13 +33,27 @@ class PostCreateSerializer(serializers.ModelSerializer):
         model = PostBlog
         fields = (
             "id",
-            # "blogger",
+            "blogger",
             "title",
-            # "category",
+            "category",
             "image",
             "content",
             # "publish_time",
             # "update_time",
             # "slug",
         )
+
+class CommentSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PostComment
+        fields = (
+            "comment",
+            # "comment_time",
+            # "commenter",
+            "post",
+        )
+        
+        
+ 
     

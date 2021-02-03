@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import PostListSerializer,PostCreateSerializer
-from .models import PostBlog
+from .serializers import PostListSerializer,PostCreateSerializer,CommentSerializer
+from .models import PostBlog,PostComment
 
 # Create your views here.
 class PostList(generics.ListAPIView):
@@ -22,4 +22,7 @@ class PostCreate(generics.CreateAPIView):
     
     def perform_create(self, serializer): #https://www.django-rest-framework.org/api-guide/generic-views/
         serializer.save(blogger=self.request.user)
-    
+
+class Comment(generics.CreateAPIView):
+    queryset= PostComment.objects.all()
+    serializer_class = CommentSerializer
