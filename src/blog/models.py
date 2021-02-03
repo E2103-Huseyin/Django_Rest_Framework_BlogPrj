@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from random import randint
 # Create your models here.
 
 
-class Blog(models.Model):
+class PostBlog(models.Model):
     EDUCATION = 'EC'
     HEALTH = 'HL'
     FAMILY = 'FM'
@@ -22,6 +23,9 @@ class Blog(models.Model):
         (RELIGION, 'Religion '),
     ]
     
+    DRAFT = 'D'
+    PUBLISHED = 'P'
+    
     BLOG_STATUS = [
         (DRAFT, 'Draft '),
         (PUBLISHED, 'Published '),
@@ -31,7 +35,7 @@ class Blog(models.Model):
     blogger = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     category = models.CharField(max_length=50, choices=BLOG_CATEGORY,default=TECHNOLOGY, )
-    status = models.CharField(max_length=50, choices=BLOG_STATUS, default="Published", )
+    status = models.CharField(max_length=50, choices=BLOG_STATUS, default=PUBLISHED, )
     image = models.URLField(max_length = 2000, blank=True)
     content = models.TextField()
     publish_time = models.DateField(auto_now_add=True) 
@@ -42,12 +46,12 @@ class Blog(models.Model):
         return self.title
     
     def save(self, *args, **kwargs):
-        if Post.objects.filter(title=self.title).exists():
+        if PostBlog.objects.filter(title=self.title).exists():
             extra = str(randint(1, 10000))
             self.slug = slugify(self.title) + "-" + extra
         else:
             self.slug = slugify(self.title)
-        super(Post, self).save(*args, **kwargs)
+        super(PostBlog, self).save(*args, **kwargs)
      
     
 

@@ -3,7 +3,7 @@
 pip instal Django
 pip install django-decouple =>  from decouple import config
 
-#django-rest-framework
+# Django-rest-framework
 https://www.django-rest-framework.org/#installation
 
 pip install djangorestframework
