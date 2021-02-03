@@ -15,11 +15,11 @@ class PostBlog(models.Model):
 
 
     BLOG_CATEGORY = [
-        (EDUCATION, 'Education '),
-        (HEALTH, 'Health '),
-        (FAMILY, 'Family '),
-        (TECHNOLOGY, 'Technology '),
-        (ECONOMY, 'Economy '),
+        (EDUCATION, 'Education'),
+        (HEALTH, 'Health'),
+        (FAMILY, 'Family'),
+        (TECHNOLOGY, 'Technology'),
+        (ECONOMY, 'Economy'),
         (RELIGION, 'Religion '),
     ]
     
@@ -44,6 +44,8 @@ class PostBlog(models.Model):
     
     def __str__(self):
         return self.title
+    
+    
     
     def save(self, *args, **kwargs):
         if PostBlog.objects.filter(title=self.title).exists():
