@@ -50,7 +50,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = (
             "comment",
             # "comment_time",
-            # "commenter",
+            "commenter",
             "post",
         )
         
