@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from .serializers import PostListSerializer,PostCreateSerializer,CommentSerializer,PostViewSerializer
 from .models import PostBlog,PostComment,PostView
+from rest_framework.permissions import IsAuthenticated,AllowAny
 
 # Create your views here.
 class PostList(generics.ListAPIView):
@@ -26,6 +27,7 @@ class PostCreate(generics.CreateAPIView):
 class Comment(generics.CreateAPIView):
     queryset= PostComment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [AllowAny]
     
     
 class View(generics.CreateAPIView):
