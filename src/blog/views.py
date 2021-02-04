@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import PostListSerializer,PostCreateSerializer,CommentSerializer
-from .models import PostBlog,PostComment
+from .serializers import PostListSerializer,PostCreateSerializer,CommentSerializer,PostViewSerializer
+from .models import PostBlog,PostComment,PostView
 
 # Create your views here.
 class PostList(generics.ListAPIView):
@@ -26,3 +26,8 @@ class PostCreate(generics.CreateAPIView):
 class Comment(generics.CreateAPIView):
     queryset= PostComment.objects.all()
     serializer_class = CommentSerializer
+    
+    
+class View(generics.CreateAPIView):
+    queryset= PostView.objects.all()
+    serializer_class = PostViewSerializer

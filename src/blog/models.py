@@ -13,7 +13,6 @@ class PostBlog(models.Model):
     ECONOMY = 'EN'
     RELIGION = 'RL'
 
-
     BLOG_CATEGORY = [
         (EDUCATION, 'Education'),
         (HEALTH, 'Health'),
@@ -44,9 +43,7 @@ class PostBlog(models.Model):
     
     def __str__(self):
         return self.title
-    
-    
-    
+       
     def save(self, *args, **kwargs):
         if PostBlog.objects.filter(title=self.title).exists():
             extra = str(randint(1, 10000))
@@ -54,8 +51,18 @@ class PostBlog(models.Model):
         else:
             self.slug = slugify(self.title)
         super(PostBlog, self).save(*args, **kwargs)
-     
     
+    def comment_text(self):
+        return self.postcomment_set.all()
+     
+    def comment_count(self):
+        return self.postcomment_set.all().count()
+    
+    def view_count(self):
+        return self.postview_set.all().count()
+    
+    def like_count(self):
+        return self.postlike_set.all().count()
 
 
 class PostComment(models.Model):
@@ -67,3 +74,17 @@ class PostComment(models.Model):
     def __str__(self):
         return self.commenter.username
     
+class PostView(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post =  models.ForeignKey(PostBlog, on_delete=models.CASCADE)
+    time_stamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.user.username
+
+class PostLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post =  models.ForeignKey(PostBlog, on_delete=models.CASCADE)
+        
+    def __str__(self):
+        return self.user.username
