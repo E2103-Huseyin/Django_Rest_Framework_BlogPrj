@@ -50,8 +50,8 @@ class PostListSerializer(serializers.ModelSerializer):
 class PostDetailSerializer(serializers.ModelSerializer):
     blogger = serializers.SerializerMethodField() #blogger shows 1 (number). so added this code to see real username
     comment_text = CommentSerializer(many=True, read_only=True)
-    # has_liked = serializers.SerializerMethodField()
-    owner = serializers.SerializerMethodField(read_only=True)
+    has_liked = serializers.SerializerMethodField()
+    # owner = serializers.SerializerMethodField(read_only=True)
     # update_url = serializers.HyperlinkedIdentityField(
     #     view_name='update',
     #     lookup_field='slug'
@@ -87,20 +87,22 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "comment_count",
             "view_count",
             "like_count",
-            'owner',
-            # "has_liked",
+            # 'owner',
+            "has_liked",
             "comment_text",
         )
         
     def get_blogger(self, obj):#blogger shows 1. so added rhis code to see real username
         return obj.blogger.username 
     
-    def get_owner(self, obj):
-        request = self.context['request']
-        if request.user.is_authenticated:
-            if obj.author == request.user:
-                return True
-            return False
+    # def get_owner(self, obj):
+    #     request = self.context['request']
+    #     if request.user.is_authenticated:
+    #         if obj.author == request.user:
+    #             return True
+    #         return False
+        
+    
 
     def get_has_liked(self, obj):
         request = self.context['request']
@@ -144,6 +146,20 @@ class PostViewSerializer(serializers.ModelSerializer):
             "user",
             "post",
             "time_stamp",
-            "post",
+            
+        )
+    
+class PostCreateUpdateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PostBlog
+        fields = (
+            
+            
+            "title",
+            "category",
+            "image",
+            "content",
+            
         )
     
