@@ -1,19 +1,23 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import PostListSerializer,PostCreateSerializer,CommentSerializer,PostViewSerializer
+from .serializers import PostListSerializer,PostDetailSerializer,PostCreateSerializer,CommentSerializer,PostViewSerializer
 from .models import PostBlog,PostComment,PostView
 from rest_framework.permissions import IsAuthenticated,AllowAny
 
 # Create your views here.
 class PostList(generics.ListAPIView):
     serializer_class = PostListSerializer
-    queryset= PostBlog.objects.all()
+    queryset = PostBlog.objects.all()
+    # queryset = Post.objects.filter(status="p")
+    permission_classes = [AllowAny]
     
-    # def get_queryset(self):
-    #     queryset= PostBlog.objects.all()
-    #     title = self.kwargs["title"]
-    #     queryset = queryset.filter(postblog__title=title)
-    #     return queryset
+class PostDetail(generics.RetrieveAPIView):
+    # permission_classes = [IsAuthenticated]
+    serializer_class = PostDetailSerializer
+    queryset = PostBlog.objects.all()
+    lookup_field = "slug"
+    
+   
     
     
 class PostCreate(generics.CreateAPIView):
@@ -23,6 +27,8 @@ class PostCreate(generics.CreateAPIView):
     
     def perform_create(self, serializer): #https://www.django-rest-framework.org/api-guide/generic-views/
         serializer.save(blogger=self.request.user)
+    
+
 
 class Comment(generics.CreateAPIView):
     queryset= PostComment.objects.all()
