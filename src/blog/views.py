@@ -35,10 +35,20 @@ class PostUpdate(generics.RetrieveUpdateAPIView):
 class PostCreate(generics.CreateAPIView):
     queryset = PostBlog.objects.all()
     serializer_class = PostCreateSerializer
-    # permission_classes = [IsAdminUser]   
+    # permission_classes = [IsAdminUser] 
+    permission_classes = [AllowAny]  
     
     def perform_create(self, serializer): #https://www.django-rest-framework.org/api-guide/generic-views/
         serializer.save(blogger=self.request.user)
+    
+class PostDelete(generics.DestroyAPIView):
+    queryset = PostBlog.objects.all()
+    serializer_class = PostDetailSerializer
+    lookup_field = "slug"
+    # permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [AllowAny] 
+    
+    
     
 
 

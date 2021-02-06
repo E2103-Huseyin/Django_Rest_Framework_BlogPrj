@@ -113,19 +113,21 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
       
 class PostCreateSerializer(serializers.ModelSerializer):
-    blogger = serializers.SerializerMethodField(read_only=True)
+    # blogger = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = PostBlog
         fields = (
-            "id",
+            
             "blogger",
             "title",
-            "category",
             "image",
+            "category",
+            "status",
+            
             "content",
             # "publish_time",
             # "update_time",
-            # "slug",
+            "slug",
         )
     # def get_blogger(self, obj):
     #     request = self.context['request']

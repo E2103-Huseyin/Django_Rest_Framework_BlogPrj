@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from random import randint
+# from .utils import get_random_code
+# import uuid
+
+
+
 # Create your models here.
 
 
