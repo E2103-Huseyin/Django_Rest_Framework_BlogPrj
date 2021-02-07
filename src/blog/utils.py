@@ -6,3 +6,4 @@ def get_random_code():
     return code
 
 
+print(get_random_code())

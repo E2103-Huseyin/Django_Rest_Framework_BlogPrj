@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.response import Response
 from rest_framework import generics
 from .serializers import PostListSerializer,PostDetailSerializer,PostCreateSerializer,CommentSerializer,PostViewSerializer,PostCreateUpdateSerializer
 from .models import PostBlog,PostComment,PostView,PostLike
@@ -59,16 +60,22 @@ class Comment(generics.CreateAPIView):
     queryset= PostComment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [AllowAny]
+    lookup_field = "slug"
     
     
 class View(generics.CreateAPIView):
     queryset= PostView.objects.all()
     serializer_class = PostViewSerializer
     
+    
+    
+
+    
 class CreateLikeAPI(APIView):
 
     
     # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request, slug):
         obj = get_object_or_404(PostBlog, slug=slug)

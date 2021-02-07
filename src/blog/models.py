@@ -1,22 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.template.defaultfilters import slugify
-from random import randint
-# from .utils import get_random_code
-# import uuid
-
-
-
-# Create your models here.
-
 
 class PostBlog(models.Model):
-    EDUCATION = 'EC'
-    HEALTH = 'HL'
-    FAMILY = 'FM'
-    TECHNOLOGY = 'TN'
-    ECONOMY = 'EN'
-    RELIGION = 'RL'
+    EDUCATION = 'E'
+    HEALTH = 'H'
+    FAMILY = 'F'
+    TECHNOLOGY = 'T'
+    ECONOMY = 'EC'
+    RELIGION = 'R'
 
     BLOG_CATEGORY = [
         (EDUCATION, 'Education'),
@@ -49,13 +40,7 @@ class PostBlog(models.Model):
     def __str__(self):
         return self.title
        
-    def save(self, *args, **kwargs):
-        if PostBlog.objects.filter(title=self.title).exists():
-            extra = str(randint(1, 10000))
-            self.slug = slugify(self.title) + "-" + extra
-        else:
-            self.slug = slugify(self.title)
-        super(PostBlog, self).save(*args, **kwargs)
+    
     
     def comment_text(self):
         return self.postcomment_set.all()
@@ -90,6 +75,7 @@ class PostView(models.Model):
 class PostLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post =  models.ForeignKey(PostBlog, on_delete=models.CASCADE)
+        
         
     def __str__(self):
         return self.user.username

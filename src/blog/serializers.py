@@ -8,6 +8,7 @@ from .models import PostBlog,PostComment,PostView,PostLike
 
 class CommentSerializer(serializers.ModelSerializer):
     commenter = serializers.SerializerMethodField()
+    post = serializers.StringRelatedField()
     class Meta:
         model = PostComment
         fields = (
@@ -19,6 +20,9 @@ class CommentSerializer(serializers.ModelSerializer):
         )
     def get_commenter(self, obj):#blogger shows 1. so added rhis code to see real username
         return obj.commenter.username 
+    def get_post(self, obj):#blogger shows 1. so added rhis code to see real username
+        return obj.post.username 
+    
     
 
 class PostListSerializer(serializers.ModelSerializer):
@@ -50,31 +54,19 @@ class PostListSerializer(serializers.ModelSerializer):
 class PostDetailSerializer(serializers.ModelSerializer):
     blogger = serializers.SerializerMethodField() #blogger shows 1 (number). so added this code to see real username
     comment_text = CommentSerializer(many=True, read_only=True)
-    has_liked = serializers.SerializerMethodField()
+    # has_liked = serializers.SerializerMethodField()
     # owner = serializers.SerializerMethodField(read_only=True)
-    # update_url = serializers.HyperlinkedIdentityField(
-    #     view_name='update',
-    #     lookup_field='slug'
-    # )
-    # like_url = serializers.HyperlinkedIdentityField(
-    #     view_name='like',
-    #     lookup_field='slug'
-    # )
-    # delete_url = serializers.HyperlinkedIdentityField(
-    #     view_name='delete',
-    #     lookup_field='slug'
-    # )
-    # comment_url = serializers.HyperlinkedIdentityField(
-    #     view_name='comment',
-    #     lookup_field='slug'
-    # )
+    update_url = serializers.HyperlinkedIdentityField(view_name='update',lookup_field='slug')
+    like_url = serializers.HyperlinkedIdentityField(view_name='like',lookup_field='slug')
+    delete_url = serializers.HyperlinkedIdentityField(view_name='delete',lookup_field='slug')
+    comment_url = serializers.HyperlinkedIdentityField(view_name='comment',lookup_field='slug')
     class Meta:
         model = PostBlog
         fields = (
-            # 'like_url',
-            # 'update_url',
-            # 'delete_url',
-            # 'comment_url',
+            'like_url',
+            'update_url',
+            'delete_url',
+            'comment_url',
             "id",
             "blogger",
             "title",
@@ -88,7 +80,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "view_count",
             "like_count",
             # 'owner',
-            "has_liked",
+            # "has_liked",
             "comment_text",
         )
         
@@ -104,12 +96,12 @@ class PostDetailSerializer(serializers.ModelSerializer):
         
     
 
-    def get_has_liked(self, obj):
-        request = self.context['request']
-        if request.user.is_authenticated:
-            if Post.objects.filter(Q(like__user=request.user) & Q(like__post=obj)).exists():
-                return True
-            return False
+    # def get_has_liked(self, obj):
+    #     request = self.context['request']
+    #     if request.user.is_authenticated:
+    #         if PostBlog.objects.filter(Q(like__user=request.user) & Q(like__post=obj)).exists():
+    #             return True
+    #         return False
 
       
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -165,3 +157,4 @@ class PostCreateUpdateSerializer(serializers.ModelSerializer):
             
         )
     
+
