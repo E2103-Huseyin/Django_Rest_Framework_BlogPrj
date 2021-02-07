@@ -17,6 +17,7 @@ class CommentSerializer(serializers.ModelSerializer):
             "comment_time",
             "commenter",
             "post",
+            
         )
     def get_commenter(self, obj):#blogger shows 1. so added rhis code to see real username
         return obj.commenter.username 

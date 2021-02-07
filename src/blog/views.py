@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 from .permissions import IsOwner
+from blog import serializers
 
 # Create your views here.
 class PostList(generics.ListAPIView):
@@ -15,6 +16,12 @@ class PostList(generics.ListAPIView):
     queryset = PostBlog.objects.all()
     # queryset = Post.objects.filter(status="p")
     permission_classes = [AllowAny]
+    
+    
+    
+    
+    
+    
     
 class PostDetail(generics.RetrieveAPIView):
     # permission_classes = [IsAuthenticated]
@@ -56,11 +63,37 @@ class PostDelete(generics.DestroyAPIView):
 
 
 
-class Comment(generics.CreateAPIView):
-    queryset= PostComment.objects.all()
-    serializer_class = CommentSerializer
+# class Comment(generics.CreateAPIView):
+#     # queryset= PostComment.objects.all()
+#     serializer_class = CommentSerializer
+#     permission_classes = [AllowAny]
+#     # lookup_field = "slug"
+#     def get_queryset(self):
+#         queryset= PostComment.objects.all()
+#         slug = self.kwargs["slug"]
+#         queryset = queryset.filter(postblog__slug=slug)
+#         return queryset
+    
+class Comment(APIView):
+    """
+    post:
+        Create a comment instnace. Returns created comment data
+        parameters: [slug, body]
+    """
+    # permission_classes = [IsAuthenticated]
     permission_classes = [AllowAny]
-    lookup_field = "slug"
+    serializer_class = CommentSerializer
+    
+
+    def post(self, request, slug):
+        post = get_object_or_404(PostBlog, slug=slug)
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(commenter=request.user, post=post)
+            return Response(serializer.data, status=200)
+        else:
+            return Response({"errors": serializer.errors}, status=400)   
+    
     
     
 class View(generics.CreateAPIView):
@@ -90,7 +123,4 @@ class CreateLikeAPI(APIView):
         return Response(data)
     
     
-    # {
-    #     "user": "ema",
-    #     "post": "corona"
-    # }
+    
