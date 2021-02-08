@@ -24,14 +24,14 @@ class PostList(generics.ListAPIView):
     
     
 class PostDetail(generics.RetrieveAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = PostDetailSerializer
     queryset = PostBlog.objects.all()
     lookup_field = "slug"
     
 class PostUpdate(generics.RetrieveUpdateAPIView):
     # permission_classes = [IsAuthenticated, IsOwner]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     queryset = PostBlog.objects.all()
     serializer_class = PostCreateUpdateSerializer
     lookup_field = "slug"
@@ -43,8 +43,8 @@ class PostUpdate(generics.RetrieveUpdateAPIView):
 class PostCreate(generics.CreateAPIView):
     queryset = PostBlog.objects.all()
     serializer_class = PostCreateSerializer
-    # permission_classes = [IsAdminUser] 
-    permission_classes = [AllowAny]  
+    permission_classes = [IsAuthenticated] 
+    # permission_classes = [AllowAny]  
     
     def perform_create(self, serializer): #https://www.django-rest-framework.org/api-guide/generic-views/
         serializer.save(blogger=self.request.user)
@@ -54,7 +54,7 @@ class PostDelete(generics.DestroyAPIView):
     serializer_class = PostDetailSerializer
     lookup_field = "slug"
     # permission_classes = [IsAuthenticated, IsOwner]
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated] 
     
     
     

@@ -18,7 +18,21 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('rest_framework.urls')),
+    path('auth/', include('dj_rest_auth.urls')),
     path('', include('blog.urls')),
     path('user/', include('users_api.urls')),
 ]
+
+
+# dj_rest_auth.urls :
+# /auth/login/ (POST)
+# /auth/logout/ (POST)
+# /auth/password/reset/ (POST)   email
+# /auth/password/reset/confirm/ (POST)
+# /auth/password/change/ (POST)  new_password1  new_password2  old_password
+# /auth/user/ (GET, PUT, PATCH)  username first_name   last_name
+# /auth/token/verify/ (POST)
+# /auth/registration/ (POST)
+# /auth/registration/verify-email/ (POST)
+# /auth/facebook/ (POST)
+# /auth/twitter/ (POST)

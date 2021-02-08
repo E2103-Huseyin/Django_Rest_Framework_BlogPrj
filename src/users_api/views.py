@@ -13,7 +13,8 @@ class RegisterView(generics.CreateAPIView):
     
     
 class ProfileView(generics.RetrieveUpdateAPIView):
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     lookup_field = "user"
