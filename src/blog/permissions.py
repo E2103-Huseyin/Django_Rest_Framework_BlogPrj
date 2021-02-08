@@ -6,4 +6,4 @@ class IsOwner(BasePermission):
     message = "You must be the owner of this post"
 
     def has_object_permission(self, request, view, obj):
-        return obj.author == request.user
+        return obj.blogger == request.user

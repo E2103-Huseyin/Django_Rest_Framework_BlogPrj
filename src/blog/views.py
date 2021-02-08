@@ -24,14 +24,15 @@ class PostList(generics.ListAPIView):
     
     
 class PostDetail(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
+    # permission_classes = [IsAuthenticated]
     serializer_class = PostDetailSerializer
     queryset = PostBlog.objects.all()
     lookup_field = "slug"
     
 class PostUpdate(generics.RetrieveUpdateAPIView):
-    # permission_classes = [IsAuthenticated, IsOwner]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny, IsOwner]
+    # permission_classes = [IsAuthenticated]
     queryset = PostBlog.objects.all()
     serializer_class = PostCreateUpdateSerializer
     lookup_field = "slug"
