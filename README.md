@@ -1,5 +1,9 @@
 # Django_Rest_Framework_BlogPrj
 
+https://blog6666.herokuapp.com/
+
+# Django
+
 pip instal Django
 pip install django-decouple =>  from decouple import config
 
